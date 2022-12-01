@@ -1,4 +1,4 @@
-# Integrate custom instance segmentation model into Supervisely
+# Integrate custom object detection model into Supervisely
 
 TODO: 
   "icon": "some url",

@@ -1,13 +1,13 @@
 {
   "type": "app",
   "version": "2.0.0",
-  "name": "Serve custom instance segmentation model",
+  "name": "Serve custom object detection model",
   "description": "Learn how to integrate your custom model in readme",
   "categories": [
     "neural network",
     "images",
     "videos",
-    "instance segmentation",
+    "object detection",
     "segmentation & tracking",
     "serve",
     "development"
