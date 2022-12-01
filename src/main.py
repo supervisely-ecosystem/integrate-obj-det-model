@@ -23,7 +23,7 @@ prepare_weights()  # prepare demo data automatically for convenient debug
 # https://detectron2.readthedocs.io/en/latest/tutorials/getting_started.html
 
 
-class MyModel(sly.nn.inference.InstanceSegmentation):
+class MyModel(sly.nn.inference.ObjectDetection):
     def load_on_device(
         self,
         device: Literal["cpu", "cuda", "cuda:0", "cuda:1", "cuda:2", "cuda:3"] = "cpu",
@@ -44,7 +44,7 @@ class MyModel(sly.nn.inference.InstanceSegmentation):
         return self.class_names  # e.g. ["cat", "dog", ...]
 
     def predict(
-        self, image_path: str, confidence_threshold: float = 0.8
+        self, image_path: str, confidence_threshold: float = 0.5
     ) -> List[sly.nn.PredictionMask]:
         image = cv2.imread(image_path)  # BGR
 
@@ -53,14 +53,15 @@ class MyModel(sly.nn.inference.InstanceSegmentation):
         pred_classes = outputs["instances"].pred_classes.detach().numpy()
         pred_class_names = [self.class_names[pred_class] for pred_class in pred_classes]
         pred_scores = outputs["instances"].scores.detach().numpy().tolist()
-        pred_masks = outputs["instances"].pred_masks.detach().numpy()
+        pred_bboxes = outputs["instances"].pred_boxes.tensor.detach().numpy()
         ####### CUSTOM CODE FOR MY MODEL ENDS (e.g. DETECTRON2)  ########
 
         results = []
-        for score, class_name, mask in zip(pred_scores, pred_class_names, pred_masks):
+        for score, class_name, bbox in zip(pred_scores, pred_class_names, pred_bboxes):
             # filter predictions by confidence
             if score >= confidence_threshold:
-                results.append(sly.nn.PredictionMask(class_name, mask, score))
+                bbox = [bbox[1], bbox[0], bbox[3], bbox[2]]
+                results.append(sly.nn.PredictionBBox(class_name, bbox, score))
         return results
 
 
