@@ -45,7 +45,7 @@ class MyModel(sly.nn.inference.ObjectDetection):
 
     def predict(
         self, image_path: str, confidence_threshold: float = 0.5
-    ) -> List[sly.nn.PredictionMask]:
+    ) -> List[sly.nn.PredictionBBox]:
         image = cv2.imread(image_path)  # BGR
 
         ####### CUSTOM CODE FOR MY MODEL STARTS (e.g. DETECTRON2) #######
