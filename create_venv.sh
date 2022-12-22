@@ -21,9 +21,10 @@ ARCHFLAGS="-arch x86_64"
 if [[ $arch == arm* ]]; then
   echo "------> Running on MAC ..."
   ARCHFLAGS="-arch arm64e"
+  CC=clang CXX=clang++ ARCHFLAGS=$ARCHFLAGS python3 -m pip install git+https://github.com/facebookresearch/detectron2.git
+else
+  pip install git+https://github.com/facebookresearch/detectron2.git
 fi
-
-CC=clang CXX=clang++ ARCHFLAGS=$ARCHFLAGS python3 -m pip install git+https://github.com/facebookresearch/detectron2.git
 
 # pycocotools via the github repo instead of pypi for better compatibility 
 pip install "git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools"
